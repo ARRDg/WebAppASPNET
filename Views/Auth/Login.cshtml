@@ -12,32 +12,32 @@
 </div>
 <div class="rightWrap flex-column align-items-center justify-content-center">
     <div class="contentForm d-flex flex-column w-100 align-items-center">
-        <span>Sign In</span>
-    </div>
+        <span class="headText">Sign In</span>
 
-    <form class="formAuth" asp-action="Login" asp-controller="Auth" method="post">
-        <div class="form-floating">
-            <input asp-for="Email" type="email" class="form-control" id="floatingInput" placeholder="">
-            <label asp-for="Email" for="floatingInput">Email</label>
+        <form class="formAuth" asp-action="Login" asp-controller="Auth" method="post">
+            <div class="form-floating">
+                <input asp-for="Email" type="email" class="form-control" id="floatingInput" placeholder="">
+                <label asp-for="Email" for="floatingInput">Email</label>
+            </div>
+
+            <div class="form-floating">
+                <input asp-for="Password" type="password" class="form-control" id="floatingInput" placeholder="">
+                <label asp-for="Password" for="floatingInput">Password</label>
+            </div>
+
+            <div class="form-check">
+                <input asp-for="RememberMe" class="form-check-input" type="checkbox" value="remember-me" id="invalidCheck" required>
+                <label asp-for="RememberMe" class="form-check-label" for="invalidCheck">
+                    Remember me
+                </label>
+            </div>
+
+            <button class="btn btn-primary w-100 py-2" type="submit">Sign In</button>
+        </form>
+
+        <div class="linkAuth">
+            <a asp-controller="Home" asp-action="Index">Recover the password</a>
+            <a asp-controller="Auth" asp-action="Register">Sign Up</a>
         </div>
-
-        <div class="form-floating">
-            <input asp-for="Password" type="password" class="form-control" id="floatingInput" placeholder="">
-            <label asp-for="Password" for="floatingInput">Password</label>
-        </div>
-
-        <div class="form-check">
-            <input asp-for="RememberMe" class="form-check-input" type="checkbox" value="remember-me" id="invalidCheck" required>
-            <label asp-for="RememberMe" class="form-check-label" for="invalidCheck">
-                Remember me
-            </label>
-        </div>
-
-        <button class="btn btn-primary w-100 py-2" type="submit">Sign In</button>
-    </form>
-
-    <div class="linkAuth">
-        <a asp-controller="Home" asp-action="Index">Recover the password</a>
-        <a asp-controller="Auth" asp-action="Register">Sign Up</a>
     </div>
 </div>
