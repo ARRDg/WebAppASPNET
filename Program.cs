@@ -1,11 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using WebAppASPNET.Data;
+using WebAppASPNET.Services.Implementations;
+using WebAppASPNET.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=db;Trusted_Connection=True;"));
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 

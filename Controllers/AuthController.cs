@@ -1,17 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebAppASPNET.Data;
 using WebAppASPNET.Models;
+using WebAppASPNET.Services.Interfaces;
 
 namespace WebAppASPNET.Controllers
 {
     public class AuthController : Controller
     {
-        private DataContext dataContext;
-        private ILogger<AuthController> logger;
-        public AuthController(DataContext dataContext, ILogger<AuthController> logger)
+        private readonly IUserService _userService;
+        private readonly ILogger<AuthController> _logger;
+        public AuthController(IUserService userService, ILogger<AuthController> logger)
         {
-            this.dataContext = dataContext;
-            this.logger = logger;
+            _userService = userService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -33,22 +34,17 @@ namespace WebAppASPNET.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(RegisterModel model)
+        public async Task<IActionResult> Register(RegisterModel model)
         {
+            if (await _userService.EmailExistsAsync(model.Email))
+            {
+                ModelState.AddModelError("Email", "An account with this Email already exists");
+            }
+
             if (!ModelState.IsValid)
                 return View(model);
 
-            var user = new User
-            {
-                Name = model.Name,
-                Email = model.Email,
-                Password = model.Password,
-                AgreeToTerms = model.AgreeToTerms
-            };
-
-            dataContext.Users.Add(user);
-            dataContext.SaveChanges();
-
+            await _userService.CreateUserAsync(model);
             return RedirectToAction("Index", "Home");
         }
     }
