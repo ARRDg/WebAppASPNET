@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebAppASPNET.Data;
 using WebAppASPNET.Models;
 using WebAppASPNET.Services.Interfaces;
 
