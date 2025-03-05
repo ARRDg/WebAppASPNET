@@ -33,14 +33,21 @@ namespace WebAppASPNET.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(User model)
+        public IActionResult Register(RegisterModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
 
-            dataContext.Add(model);
+            var user = new User
+            {
+                Name = model.Name,
+                Email = model.Email,
+                Password = model.Password,
+                AgreeToTerms = model.AgreeToTerms
+            };
+
+            dataContext.Users.Add(user);
             dataContext.SaveChanges();
-            logger.LogInformation(model.Id.ToString());
 
             return RedirectToAction("Index", "Home");
         }
