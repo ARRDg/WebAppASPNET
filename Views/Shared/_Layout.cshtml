@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,6 +24,11 @@
                         <use xlink:href="#u" transform="rotate(180 20,18.5)" />
                     </svg>
                 </a>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <button>@User.FindFirstValue(ClaimTypes.Name)</button>
+                }
 
                 <div class="text-end">
                     <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-light">Login</a>

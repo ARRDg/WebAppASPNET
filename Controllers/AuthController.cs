@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using WebAppASPNET.Data;
 using WebAppASPNET.Models;
 using WebAppASPNET.Services.Interfaces;
 
@@ -8,10 +14,12 @@ namespace WebAppASPNET.Controllers
     {
         private readonly IUserService _userService;
         private readonly ILogger<AuthController> _logger;
-        public AuthController(IUserService userService, ILogger<AuthController> logger)
+        private readonly DataContext db;
+        public AuthController(IUserService userService, ILogger<AuthController> logger, DataContext db)
         {
             _userService = userService;
             _logger = logger;
+            this.db = db;
         }
 
         [HttpGet]
@@ -21,8 +29,25 @@ namespace WebAppASPNET.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginModel model)
+        public async Task<IActionResult> Login(LoginModel model)
         {
+            var user = db.Users.FirstOrDefault(x => x.Name == model.Email && x.Password == model.Password);
+            if (user is null)
+            {
+                ModelState.AddModelError("", "Неверный логин или пароль");
+                return View(model);
+            }
+
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Name.ToString())
+            };
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
             return  RedirectToAction("Index", "Home");
         }
 
