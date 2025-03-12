@@ -14,12 +14,17 @@ namespace WebAppASPNET.Services.Implementations
             _context = context;
         }
 
-        public async Task<bool> EmailExistsAsync(string email)
+        public User Authenticate(string email, string password)
+        {
+            return _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
+        }
+
+        public async Task<bool> EmailExists(string email)
         {
             return await _context.Users.AnyAsync(u => u.Email == email);
         }
 
-        public async Task CreateUserAsync(RegisterModel model)
+        public async Task CreateUser(RegisterModel model)
         {
             var user = new User
             {

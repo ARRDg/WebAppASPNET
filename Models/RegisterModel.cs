@@ -4,27 +4,36 @@ namespace WebAppASPNET.Models
 {
     public class RegisterModel
     {
-        [Required(ErrorMessage = "Name is required")]
+        [Required(ErrorMessage = "Имя обязательно для заполнения")]
         [StringLength(50, MinimumLength = 2,
-            ErrorMessage = "Name must be between 2 and 50 characters")]
+            ErrorMessage = "Имя должно содержать от 2 до 50 символов")]
         [RegularExpression(@"^[a-zA-Z0-9-]+$",
-            ErrorMessage = "Name can only contain letters, numbers and hyphens")]
+            ErrorMessage = "Имя может содержать только буквы, цифры и дефисы")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Email is required")]
-        [EmailAddress(ErrorMessage = "Invalid email format")]
+        [Required(ErrorMessage = "Email обязателен для заполнения")]
+        [EmailAddress(ErrorMessage = "Неверный формат email")]
         [StringLength(100,
-            ErrorMessage = "Email cannot exceed 100 characters")]
+            ErrorMessage = "Email не может превышать 100 символов")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Password is required")]
+        [Required(ErrorMessage = "Пароль обязателен для заполнения")]
         [StringLength(100, MinimumLength = 8,
-            ErrorMessage = "Password must be at least 8 characters")]
+            ErrorMessage = "Пароль должен содержать минимум 8 символов")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Range(typeof(bool), "true", "true",
-            ErrorMessage = "You must agree to the terms")]
+        [MustBeTrue(ErrorMessage = "Необходимо принять условия соглашения")]
         public bool AgreeToTerms { get; set; }
+
+    }
+
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+    public class MustBeTrueAttribute : ValidationAttribute
+    {
+        public override bool IsValid(object value)
+        {
+            return value != null && value is bool && (bool)value;
+        }
     }
 }
