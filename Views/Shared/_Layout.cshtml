@@ -1,13 +1,11 @@
-﻿@using System.Security.Claims
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"  crossorigin="anonymous">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 </head>
-
 <body data-bs-theme="dark">
     <header class="p-3 border-bottom">
         <div class="container">
@@ -25,13 +23,8 @@
                     </svg>
                 </a>
 
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <button>@User.FindFirstValue(ClaimTypes.Name)</button>
-                }
-
                 <div class="text-end">
-                    <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-light">Login</a>
+                    <a asp-controller="Auth" asp-action="login" class="btn btn-outline-light me-2">Войти</a><a asp-controller="Auth" asp-action="register" class="btn btn-primary">Регистрация</a>
                 </div>
             </div>
         </div>
