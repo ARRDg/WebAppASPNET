@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-public class LoginModel
+﻿namespace WebAppASPNET.Models
 {
-    public string Email { get; set; }
+    public class LoginModel
+    {
+        public string Email { get; set; }
 
-    public string Password { get; set; }
+        public string Password { get; set; }
 
-    public bool RememberMe { get; set; }
+        public bool RememberMe { get; set; }
+    }
 }

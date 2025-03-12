@@ -1,0 +1,10 @@
+﻿@model ProfileModel
+@{
+    ViewData["Title"] = "Профиль";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
+}
+
+<a asp-controller="Auth" asp-action="Logout" class="btn btn-danger">Выйти из аккаунта</a>
