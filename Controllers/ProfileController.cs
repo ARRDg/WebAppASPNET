@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WebAppASPNET.Data;
 using WebAppASPNET.Services.Interfaces;
 
@@ -19,7 +20,8 @@ namespace WebAppASPNET.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            
+            return View(this.GetProfile());
         }
     }
 }

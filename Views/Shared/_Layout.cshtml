@@ -25,12 +25,13 @@
                 </a>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <div class="text-end">
+                    <div class="d-flex">
                         <a asp-controller="Profile" asp-action="Index" class="btn btn-outline-light">Профиль</a>
                     </div>
                 }else{
-                    <div class="text-end">
-                        <a asp-controller="Auth" asp-action="login" class="btn btn-outline-light me-2">Войти</a><a asp-controller="Auth" asp-action="register" class="btn btn-primary">Регистрация</a>
+                    <div class="d-flex column-gap-2">
+                        <a asp-controller="Auth" asp-action="login" class="btn btn-outline-light">Войти</a>
+                        <a asp-controller="Auth" asp-action="register" class="btn btn-primary">Регистрация</a>
                     </div>
                 }
             </div>
