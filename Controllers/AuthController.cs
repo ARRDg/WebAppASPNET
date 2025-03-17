@@ -86,6 +86,7 @@ namespace WebAppASPNET.Controllers
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
+
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
 
