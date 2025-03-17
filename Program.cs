@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using WebAppASPNET.Data;
+using WebAppASPNET.Hubs;
 using WebAppASPNET.Services.Implementations;
 using WebAppASPNET.Services.Interfaces;
 
@@ -10,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=db;Trusted_Connection=True;"));
 builder.Services.AddScoped<IUserService, UserService>();
-
+builder.Services.AddSignalR();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options => {
         options.LoginPath = "/Auth/Login";
@@ -32,6 +33,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapHub<ChatHub>("/hubs/chat");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

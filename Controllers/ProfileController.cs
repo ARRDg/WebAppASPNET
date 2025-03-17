@@ -18,9 +18,9 @@ namespace WebAppASPNET.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string id)
         {
-            
+            ViewBag.RoomId = id;
             return View(this.GetProfile());
         }
     }

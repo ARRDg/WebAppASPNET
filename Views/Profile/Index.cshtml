@@ -9,3 +9,33 @@
 <h1>Ваше имя:</h1> <h2>@Model.CurrentName</h2>
 <h1>Ваше почта:</h1> <h2>@Model.CurrentEmail</h2>
 <a asp-controller="Auth" asp-action="Logout" class="btn btn-danger">Выйти из аккаунта</a>
+
+<input id="input" /> <button onclick="sendMessage()">Test</button>
+<div id="story" class="d-flex flex-column">
+
+</div>
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script>
+        const hubConnection = new signalR.HubConnectionBuilder()
+            .withUrl("/hubs/chat")
+            .build();
+
+        const roomId = @Html.Raw(ViewBag.RoomId);
+
+        async function sendMessage() {
+            let text = document.getElementById('input').value;
+            await hubConnection.invoke("SendMessageToOther", text);
+        }
+        
+        hubConnection.on('RecieveMessageToAll', (text) => {
+            document.getElementById('story').innerHTML += `<p>${text}</p>`;
+        });
+
+        hubConnection.start()
+            .then(() => {
+                await hubConnection.invoke("ConnectToRoom", roomId);
+            })
+    </script>
+}
