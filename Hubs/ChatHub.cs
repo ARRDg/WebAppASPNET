@@ -2,25 +2,28 @@
 
 namespace WebAppASPNET.Hubs
 {
-    public class ChatHub : Hub
+    public interface IChatClient
     {
-        public override async Task OnConnectedAsync()
+        public Task ServerMassage(string username, string message);
+        public Task SendClientMessage(string roomId, string user, string message);
+    }
+    public class ChatHub : Hub<IChatClient>
+    {
+        public async Task JoinRoom(string roomId)
         {
-            await SendMessageToAll("Message");
-            await base.OnConnectedAsync();
+            await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
+            await Clients.Group(roomId).ServerMassage("UserJoined", $"{Context.ConnectionId} присоеденился к чату!");
         }
 
-        public override async Task OnDisconnectedAsync(Exception? exception)
+        public async Task LeaveRoom(string roomId)
         {
-            await base.OnDisconnectedAsync(exception);
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId);
+            await Clients.Group(roomId).ServerMassage("UserLeft", $"{Context.ConnectionId} покинул чат!");
         }
-        public async Task SendMessageToOther(string message)
+
+        public async Task SendMessage(string roomId, string user, string message)
         {
-            await Clients.All.SendAsync("RecieveMessageToAll", $"{Context.ConnectionId}: {message} ");
-        }
-        public async Task SendMessageToAll(string message)
-        {
-            await Clients.All.SendAsync("RecieveMessageToAll", $"{message} {Context.ConnectionId}");
+            await Clients.Group(roomId).SendClientMessage("ReceiveMessage", user, message);
         }
     }
 }
