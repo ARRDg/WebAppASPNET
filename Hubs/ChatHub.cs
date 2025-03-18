@@ -1,10 +1,17 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using System.Security.Claims;
+using WebAppASPNET.Services.Interfaces;
 
 namespace WebAppASPNET.Hubs
 {
     public class ChatHub: Hub
     {
+        private readonly IUserService _userService;
+
+        public ChatHub(IUserService userService)
+        {
+            _userService = userService;
+        }
+
         public override Task OnConnectedAsync()
         {
             return base.OnConnectedAsync();
@@ -16,7 +23,7 @@ namespace WebAppASPNET.Hubs
         }
         public async Task JoinRoom(string roomId)
         {
-            var userName = Context.User.FindFirst(ClaimTypes.Name)?.Value;
+            var userName = _userService.GetNameUser(Context.User);
 
             if (string.IsNullOrEmpty(userName))
             {
@@ -29,7 +36,7 @@ namespace WebAppASPNET.Hubs
 
         public async Task LeaveRoom(string roomId)
         {
-            var userName = Context.User.FindFirst(ClaimTypes.Name)?.Value;
+            var userName = _userService.GetNameUser(Context.User);
 
             if (string.IsNullOrEmpty(userName))
             {
@@ -42,7 +49,7 @@ namespace WebAppASPNET.Hubs
 
         public async Task SendMessage(string roomId, string message)
         {
-            var userName = Context.User.FindFirst(ClaimTypes.Name)?.Value;
+            var userName = _userService.GetNameUser(Context.User);
 
             if (string.IsNullOrEmpty(userName))
             {

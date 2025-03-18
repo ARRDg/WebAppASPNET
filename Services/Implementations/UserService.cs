@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using WebAppASPNET.Data;
 using WebAppASPNET.Models;
 using WebAppASPNET.Services.Interfaces;
@@ -37,5 +38,7 @@ namespace WebAppASPNET.Services.Implementations
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
         }
+
+        public string? GetNameUser(ClaimsPrincipal user) => user?.FindFirst(ClaimTypes.Name)?.Value;
     }
 }
