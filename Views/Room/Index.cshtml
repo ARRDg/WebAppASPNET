@@ -1,1 +1,29 @@
-﻿
+﻿@{
+    ViewBag.Title = "Chat Room";
+}
+
+<h2>Chat Room: @ViewBag.RoomId</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div id="chat-messages">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <input type="text" id="message-input" placeholder="Type your message..." />
+            <button id="send-button">Send</button>
+            <input type="hidden" id="room-id" value="@ViewBag.RoomId" />
+            <input type="text" id="user-name" placeholder="Enter your name" />
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chatHub")
+            .build();
+    </script>
+}

@@ -9,5 +9,6 @@ namespace WebAppASPNET.Data
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Room> Rooms { get; set; }
     }
 }
