@@ -69,12 +69,6 @@
 
             window.location.href = "/Home";
         });
-
-        window.addEventListener("beforeunload", function (event) {
-            hubConnection.invoke("LeaveRoom", roomId)
-                .catch(function (err) {
-                    return console.error(err.toString());
-                });
         });
     </script>
 }
