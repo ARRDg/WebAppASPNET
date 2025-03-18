@@ -62,7 +62,6 @@
             });
 
         document.getElementById("leaveBtn").addEventListener("click", function () {
-            hubConnection.invoke("LeaveRoom", roomId)
                 .catch(function (err) {
                     return console.error(err.toString());
                 });
