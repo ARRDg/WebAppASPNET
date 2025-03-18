@@ -12,17 +12,16 @@ namespace WebAppASPNET.Hubs
             _userService = userService;
         }
 
-        public override Task OnConnectedAsync()
-        {
-            return base.OnConnectedAsync();
-        }
-
         public override Task OnDisconnectedAsync(Exception? exception)
         {
+            // Дастаю данные из бд для Подключенных
+            // Отправляю метод LeaveRoom
             return base.OnDisconnectedAsync(exception);
         }
         public async Task JoinRoom(string roomId)
         {
+            // Тут буду принимать Context.ConnectionId и roomId.
+            // Сохраняю все в бд для Подключенный
             var userName = _userService.GetNameUser(Context.User);
 
             if (string.IsNullOrEmpty(userName))
@@ -34,17 +33,10 @@ namespace WebAppASPNET.Hubs
             await Clients.Group(roomId).SendAsync("UserJoined", $"{userName} вошел в чат!");
         }
 
-        public async Task LeaveRoom(string roomId)
+        public async Task LeaveRoom(string userName, string roomId)
         {
-            var userName = _userService.GetNameUser(Context.User);
-
-            if (string.IsNullOrEmpty(userName))
-            {
-                userName = "Anonymous";
-            }
-
+            await Clients.Group(roomId).SendAsync("UserLeave", $"{userName} покинул чат!");
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId);
-            await Clients.Group(roomId).SendAsync("UserLeave", $"{userName} вошел в чат!");
         }
 
         public async Task SendMessage(string roomId, string message)
