@@ -44,7 +44,7 @@ namespace WebAppASPNET.Controllers
 
             if (room == null)
             {
-                return View("Index", "Home");
+                return RedirectToAction("Index", "Home");
             }
 
             ViewBag.RoomId = v;

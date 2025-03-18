@@ -11,10 +11,9 @@
             </div>
         </div>
         <div class="col-md-6">
-            <input type="text" id="message-input" placeholder="Type your message..." />
-            <button id="send-button">Send</button>
-            <input type="hidden" id="room-id" value="@ViewBag.RoomId" />
-            <input type="text" id="user-name" placeholder="Enter your name" />
+            <input type="text" id="message" placeholder="Твое смс" />
+            <button id="sendBtn">Send</button>
+            <button id="leaveBtn">Leave Room</button>
         </div>
     </div>
 </div>
@@ -22,8 +21,59 @@
 @section Scripts{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
     <script>
-        const connection = new signalR.HubConnectionBuilder()
+        const roomId = "@ViewBag.RoomId";
+
+        const hubConnection = new signalR.HubConnectionBuilder()
             .withUrl("/chatHub")
             .build();
+
+        document.getElementById("sendBtn").addEventListener("click", function () {
+            let message = document.getElementById("message").value;
+            hubConnection.invoke("SendMessage", roomId, message)
+                .catch(function (err) {
+                    return console.error(err.toString());
+                });
+            document.getElementById("message").value = "";
+        });
+
+        hubConnection.on("ReceiveMessage", (user, message) => {
+            var text = `${user}: ${message}`;
+            console.log(text);
+        });
+
+        hubConnection.on("UserJoined", (message) => {
+            var text = `${message}`;
+            console.log(text);
+        });
+
+        hubConnection.on("UserLeave", (message) => {
+            var text = `${message}`;
+            console.log(text);
+        });
+
+        hubConnection.start()
+            .then(() => {
+                console.log("SignalR connected.");
+                hubConnection.invoke("JoinRoom", roomId);
+            })
+            .catch(function (err) {
+                return console.error(err.toString());
+            });
+
+        document.getElementById("leaveBtn").addEventListener("click", function () {
+            hubConnection.invoke("LeaveRoom", roomId)
+                .catch(function (err) {
+                    return console.error(err.toString());
+                });
+
+            window.location.href = "/Home";
+        });
+
+        window.addEventListener("beforeunload", function (event) {
+            hubConnection.invoke("LeaveRoom", roomId)
+                .catch(function (err) {
+                    return console.error(err.toString());
+                });
+        });
     </script>
 }

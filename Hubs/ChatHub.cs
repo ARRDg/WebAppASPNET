@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using System.Security.Claims;
 
 namespace WebAppASPNET.Hubs
 {
@@ -15,19 +16,39 @@ namespace WebAppASPNET.Hubs
         }
         public async Task JoinRoom(string roomId)
         {
+            var userName = Context.User.FindFirst(ClaimTypes.Name)?.Value;
+
+            if (string.IsNullOrEmpty(userName))
+            {
+                userName = "Anonymous";
+            }
+
             await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
-            await Clients.Group(roomId).SendAsync("UserJoined", Context.ConnectionId);
+            await Clients.Group(roomId).SendAsync("UserJoined", $"{userName} вошел в чат!");
         }
 
         public async Task LeaveRoom(string roomId)
         {
+            var userName = Context.User.FindFirst(ClaimTypes.Name)?.Value;
+
+            if (string.IsNullOrEmpty(userName))
+            {
+                userName = "Anonymous";
+            }
+
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId);
-            await Clients.Group(roomId).SendAsync("UserLeave", Context.ConnectionId);
+            await Clients.Group(roomId).SendAsync("UserLeave", $"{userName} вошел в чат!");
         }
 
-        public async Task SendMessage(string roomId, string user, string message)
+        public async Task SendMessage(string roomId, string message)
         {
-            await Clients.Group(roomId).SendAsync("ReceiveMessage", user, message);
+            var userName = Context.User.FindFirst(ClaimTypes.Name)?.Value;
+
+            if (string.IsNullOrEmpty(userName))
+            {
+                userName = "Anonymous";
+            }
+            await Clients.Group(roomId).SendAsync("ReceiveMessage", userName, message);
         }
     }
 }
