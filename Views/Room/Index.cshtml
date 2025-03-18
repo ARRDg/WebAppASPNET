@@ -1,8 +1,9 @@
-﻿@{
+﻿@model RoomModel
+@{
     ViewBag.Title = "Chat Room";
 }
 
-<h2>Chat Room: @ViewBag.RoomId</h2>
+<h2>Chat Room: @Model.Name</h2>
 
 <div class="container">
     <div class="row">
@@ -21,7 +22,7 @@
 @section Scripts{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
     <script>
-        const roomId = "@ViewBag.RoomId";
+        const roomId = "@Model.RoomId";
 
         const hubConnection = new signalR.HubConnectionBuilder()
             .withUrl("/chatHub")

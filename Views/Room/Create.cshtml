@@ -1,15 +1,17 @@
-﻿@{
+﻿@model RoomModel
+@{
     ViewData["Title"] = "Создать комнату";
 }
+
 <div class="text-center">
     <h1>Создать комнату</h1>
 
 
-<form asp-action="Create" method="post">
-    <div class="form-group">
-        <label for="roomName">Название комнаты:</label>
-        <input type="text" class="form-control"required>
-    </div>
-    <button type="submit" class="btn btn-primary">Создать</button>
-</form>
+    <form asp-action="Create" method="post">
+        <div class="form-group">
+            <label for="roomName">Название комнаты:</label>
+            <input asp-for="Name" type="Name" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Создать</button>
+    </form>
 </div>

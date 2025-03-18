@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAppASPNET.Data;
+using WebAppASPNET.Models;
+using WebAppASPNET.Services.Interfaces;
 
 namespace WebAppASPNET.Controllers
 {
@@ -9,10 +11,12 @@ namespace WebAppASPNET.Controllers
     public class RoomController : Controller
     {
         private readonly DataContext _context;
+        private readonly IRoomService _roomService;
 
-        public RoomController(DataContext context)
+        public RoomController(DataContext context, IRoomService roomService)
         {
             _context = context;
+            _roomService = roomService;
         }
 
         public IActionResult Create()
@@ -21,13 +25,9 @@ namespace WebAppASPNET.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(string roomName)
+        public async Task<IActionResult> Create(RoomModel model)
         {
-            string roomId = Guid.NewGuid().ToString("N").Substring(0, 16);
-            var room = new Room { RoomId = roomId, Name = roomName };
-
-            _context.Rooms.Add(room);
-            await _context.SaveChangesAsync();
+            var roomId = await _roomService.GenerateRoom(model);
 
             return RedirectToAction("Index", new { v = roomId });
         }
@@ -39,16 +39,14 @@ namespace WebAppASPNET.Controllers
                 return RedirectToAction("Create");
             }
 
-            var room = await _context.Rooms
-                .FirstOrDefaultAsync(r => r.RoomId == v);
+            var roomModel = await _roomService.GetRoomModel(v);
 
-            if (room == null)
+            if (roomModel == null)
             {
                 return RedirectToAction("Index", "Home");
             }
 
-            ViewBag.RoomId = v;
-            return View();
+            return View(roomModel);
         }
     }
 }
