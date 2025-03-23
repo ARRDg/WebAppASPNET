@@ -5,52 +5,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/mainLayout.css" asp-append-version="true" />
     @RenderSection("Styles", required: false)
 </head>
 <body data-bs-theme="dark">
-    <header class="p-3 border-bottom">
-        <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-between">
-                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                    <svg class="bi me-2" width="40" height="37" role="img" aria-label="Bootstrap">
-                        <g id="u">
-                            <g id="t">
-                                <path id="s" fill="none" stroke="#000" stroke-width="2.4" d="m13,6.5a13,13 0 0,1 3-1.2v-4h8v4a13,13 0 0,1 3,1.2M19,12.5a6,6 0 1,0 2,0z" />
-                                <use xlink:href="#s" transform="rotate(45 20,18.5)" />
+    <div class="main-container">
+        <header class="p-3 border-bottom">
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-between">
+                    <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <svg class="bi me-2" width="40" height="37" role="img" aria-label="Bootstrap">
+                            <g id="u">
+                                <g id="t">
+                                    <path id="s" fill="none" stroke="#000" stroke-width="2.4" d="m13,6.5a13,13 0 0,1 3-1.2v-4h8v4a13,13 0 0,1 3,1.2M19,12.5a6,6 0 1,0 2,0z" />
+                                    <use xlink:href="#s" transform="rotate(45 20,18.5)" />
+                                </g>
+                                <use xlink:href="#t" transform="rotate(90 20,18.5)" />
                             </g>
-                            <use xlink:href="#t" transform="rotate(90 20,18.5)" />
-                        </g>
-                        <use xlink:href="#u" transform="rotate(180 20,18.5)" />
-                    </svg>
-                </a>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <div class="d-flex">
-                        <a asp-controller="Profile" asp-action="Index" class="btn btn-outline-light">Профиль</a>
-                    </div>
-                }else{
-                    <div class="d-flex column-gap-2">
-                        <a asp-controller="Auth" asp-action="login" class="btn btn-outline-light">Войти</a>
-                        <a asp-controller="Auth" asp-action="register" class="btn btn-primary">Регистрация</a>
-                    </div>
-                }
+                            <use xlink:href="#u" transform="rotate(180 20,18.5)" />
+                        </svg>
+                    </a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="d-flex">
+                            <a asp-controller="Profile" asp-action="Index" class="btn btn-outline-light">Профиль</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex column-gap-2">
+                            <a asp-controller="Auth" asp-action="login" class="btn btn-outline-light">Войти</a>
+                            <a asp-controller="Auth" asp-action="register" class="btn btn-primary">Регистрация</a>
+                        </div>
+                    }
+                </div>
             </div>
+        </header>
+
+        <div class="content-wrapper">
+            <div class="sidebar" id="sidebar">
+                <button class="collapse-button" id="collapse-button">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <g><path d="M16 16V4h2v12h-2zM6 9l2.501-2.5-1.5-1.5-5 5 5 5 1.5-1.5-2.5-2.5h8V9H6z"></path></g>
+                    </svg>
+                </button>
+
+                <div class="sidebar-section section-first">
+                    <h2 class="section-title">
+                        <span>Ваши друзья</span>
+                        <svg class="icon icon-friends" width="20" height="20" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9.171 4.171A4 4 0 0 0 6.343 3H6a4 4 0 0 0-4 4v.343a4 4 0 0 0 1.172 2.829L10 17l6.828-6.828A4 4 0 0 0 18 7.343V7a4 4 0 0 0-4-4h-.343a4 4 0 0 0-2.829 1.172L10 5l-.829-.829zm.829 10 5.414-5.414A2 2 0 0 0 16 7.343V7a2 2 0 0 0-2-2h-.343a2 2 0 0 0-1.414.586L10 7.828 7.757 5.586A2 2 0 0 0 6.343 5H6a2 2 0 0 0-2 2v.343a2 2 0 0 0 .586 1.414L10 14.172z" clip-rule="evenodd"></path></svg>
+                    </h2>
+                    <a href="#" class="chat-link">
+                        <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/58d70887-29ef-4f96-9c17-e2b6f7b2e56b-profile_image-50x50.png" alt="Friend 1" class="profile-pic">
+                        <span class="friend-name">МегаПека</span>
+                        <span class="status">Online</span>
+                    </a>
+                    <a href="#" class="chat-link">
+                        <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/58d70887-29ef-4f96-9c17-e2b6f7b2e56b-profile_image-50x50.png" alt="Friend 2" class="profile-pic">
+                        <span class="friend-name">Анатолий</span>
+                        <span class="status offline">Offline</span>
+                    </a>
+
+                    <div class="d-none" id="more-friends">
+                        <a href="#" class="chat-link">
+                            <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/58d70887-29ef-4f96-9c17-e2b6f7b2e56b-profile_image-50x50.png" alt="Friend 6" class="profile-pic">
+                            <span class="friend-name">Ллллл</span>
+                            <span class="status offline">Offline</span>
+                        </a>
+                    </div>
+
+                    <button class="show-more-button" id="show-more-friends">Показать ещё</button>
+                    <button class="hide-button d-none" id="hide-friends">Скрыть</button>
+                </div>
+
+                <div class="sidebar-section">
+                    <h2 class="section-title">
+                        <span>Комнаты друзей</span>
+                        <svg class="icon icon-rooms" width="20" height="20" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.002 3.999a2 2 0 0 1 2 2v2L18 6v8l-3.998-2v2a2 2 0 0 1-2 1.999h-8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h8zM12 6H4v8h8V6z" clip-rule="evenodd"></path></svg>
+                    </h2>
+                    <a href="#" class="chat-link">
+                        <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/58d70887-29ef-4f96-9c17-e2b6f7b2e56b-profile_image-50x50.png" alt="Room 1" class="profile-pic">
+                        <span class="friend-name">Комната 1</span>
+                        <span class="participant-count">5</span>
+                    </a>
+
+                    <div class="d-none" id="more-rooms">
+                        <a href="#" class="chat-link">
+                            <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/58d70887-29ef-4f96-9c17-e2b6f7b2e56b-profile_image-50x50.png" alt="Room 7" class="profile-pic">
+                            <span class="friend-name">Комната 2</span>
+                            <span class="participant-count">7</span>
+                        </a>
+                    </div>
+                    <button class="show-more-button" id="show-more-rooms">Показать ещё</button>
+                    <button class="hide-button d-none" id="hide-rooms">Скрыть</button>
+                </div>
+            </div>
+            <main class="chat-list">
+                @RenderBody()
+            </main>
         </div>
-    </header>
-
-    <main role="main" class="my-4">
-        @RenderBody()
-    </main>
-
-    <footer class="py-3 border-top">
-        <p class="text-center text-body-secondary">© 2025 Company, Inc</p>
-    </footer>
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    </div>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/js/sidebar.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

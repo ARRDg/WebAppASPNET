@@ -1,0 +1,203 @@
+﻿body, html {
+    height: 100%;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+header {
+    flex-shrink: 0;
+}
+
+.content-wrapper {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.sidebar {
+    flex: 0 0 240px;
+    background-color: #343a40;
+    border-right: 1px solid #495057;
+    padding: 10px;
+    overflow-y: auto;
+    position: relative;
+    color: #fff;
+}
+
+
+.collapse-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    z-index: 10;
+}
+
+    .collapse-button svg {
+        width: 20px;
+        height: 20px;
+        fill: #fff;
+    }
+
+.collapsed {
+    flex: 0 0 50px !important;
+}
+
+.collapsed .friend-name,
+.collapsed .status,
+.collapsed .participant-count,
+.collapsed .show-more-button,
+.collapsed .hide-button,
+.collapsed .section-title span {
+    display: none;
+}
+
+.collapsed .collapse-button svg {
+    transform: rotate(180deg);
+}
+
+.collapsed .section-title .icon {
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.chat-list {
+    flex-grow: 1;
+    background-color: #212529;
+    padding: 10px;
+    overflow-y: auto;
+    color: #fff;
+}
+
+.section-first {
+    padding-top: 30px;
+}
+
+.sidebar-section {
+    margin-bottom: 15px;
+}
+
+.section-title {
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    border-bottom: 1px solid #495057;
+    padding-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.section-title svg {
+    width: 20px;
+    height: 20px;
+    fill: #fff;
+}
+
+.icon {
+    display: none;
+}
+
+.chat-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #fff;
+    margin-bottom: 12px;
+}
+
+.chat-link:hover {
+    background-color: #495057;
+}
+
+.profile-pic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.friend-name {
+    font-weight: bold;
+    margin-right: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+}
+
+.status {
+    font-size: 0.8em;
+    white-space: nowrap;
+    color: #28a745;
+}
+
+.status.offline {
+    color: #6c757d;
+}
+
+.participant-count {
+    background-color: #dc3545;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7em;
+}
+
+
+.show-more-button,
+.hide-button {
+    background-color: transparent;
+    border: none;
+    color: #0d6efd;
+    cursor: pointer;
+    padding: 5px 0;
+    text-align: left;
+    width: 100%;
+}
+
+.show-more-button:hover,
+.hide-button:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 1199px) {
+    .sidebar {
+        flex: 0 0 50px !important;
+    }
+
+    .collapse-button {
+        display: none;
+    }
+
+    .section-title span {
+        display: none;
+    }
+
+    .section-title .icon {
+        display: inline-block;
+        margin-left: 5px;
+    }
+
+    .friend-name, .status, .participant-count, .show-more-button, .hide-button {
+        display: none;
+    }
+
+    .sidebar-section {
+        margin-bottom: 0;
+    }
+}
