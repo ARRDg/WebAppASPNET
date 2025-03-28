@@ -10,5 +10,6 @@ namespace WebAppASPNET.Services.Interfaces
         public User Authenticate(string email, string password);
         Task<bool> EmailExists(string email);
         Task CreateUser(RegisterModel model);
+        Task<ProfileModel> GetProfileById(string id);
     }
 }

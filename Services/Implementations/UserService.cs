@@ -40,5 +40,26 @@ namespace WebAppASPNET.Services.Implementations
         }
 
         public string? GetNameUser(ClaimsPrincipal user) => user?.FindFirst(ClaimTypes.Name)?.Value;
+
+        public async Task<ProfileModel> GetProfileById(string id)
+        {
+            int profileId = int.Parse(id);
+            var user = await _context.Users
+                .Where(u => u.Id == profileId)
+                .Select(u => new { u.Id, u.Name, u.Email })
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            return new ProfileModel()
+            {
+                CurrentId = user.Id.ToString(),
+                CurrentName = user.Name,
+                CurrentEmail = user.Email
+            };
+        }
     }
 }

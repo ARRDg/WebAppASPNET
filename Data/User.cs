@@ -7,5 +7,8 @@
         public string Email { get; set; }
         public string Password { get; set; }
         public bool AgreeToTerms { get; set; }
+
+        public ICollection<Friendship> SentRequest { get; set; }
+        public ICollection<Friendship> ReceivedRequest { get; set; }
     }
 }

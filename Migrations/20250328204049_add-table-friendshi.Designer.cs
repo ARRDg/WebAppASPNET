@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAppASPNET.Data;
 
@@ -11,9 +12,11 @@ using WebAppASPNET.Data;
 namespace WebAppASPNET.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250328204049_add-table-friendshi")]
+    partial class addtablefriendshi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,13 +45,19 @@ namespace WebAppASPNET.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId1")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ReceiverId");
+                    b.HasIndex("UserId");
 
-                    b.HasIndex("RequesterId");
+                    b.HasIndex("UserId1");
 
-                    b.ToTable("Friendships");
+                    b.ToTable("Friendship");
                 });
 
             modelBuilder.Entity("WebAppASPNET.Data.Room", b =>
@@ -103,15 +112,11 @@ namespace WebAppASPNET.Migrations
                 {
                     b.HasOne("WebAppASPNET.Data.User", null)
                         .WithMany("ReceivedRequest")
-                        .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.HasOne("WebAppASPNET.Data.User", null)
                         .WithMany("SentRequest")
-                        .HasForeignKey("RequesterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("WebAppASPNET.Data.User", b =>

@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using WebAppASPNET.Data;
 using WebAppASPNET.Models;
-using WebAppASPNET.Services.Implementations;
 using WebAppASPNET.Services.Interfaces;
 
 namespace WebAppASPNET.Controllers
@@ -12,44 +10,32 @@ namespace WebAppASPNET.Controllers
     public class ProfileController : Controller
     {
         private readonly IUserService _userService;
-        private readonly DataContext _context;
 
-        public ProfileController(IUserService userService, DataContext context)
+        public ProfileController(IUserService userService)
         {
             _userService = userService;
-            _context = context;
-        }
-        [Route("[controller]/{id?}")]
-        public IActionResult Index(string? id)
-        {
-            ProfileModel data;
-
-            if (string.IsNullOrEmpty(id))
-            {
-                data = this.GetMyProfile();
-            }
-            else
-            {
-                data = this.GetMyProfile();
-            }
-
-            return View();
         }
 
-/*        public async Task<IActionResult> Index()
-        {
-*//*            if (string.IsNullOrEmpty(id))
+            [Route("[controller]/{id?}")]
+            public async Task<ViewResult> Index(string? id)
             {
-                return RedirectToAction("Index", "Home");
+                ProfileModel data;
+
+                if (string.IsNullOrEmpty(id) || User.FindFirstValue(ClaimTypes.NameIdentifier) == id)
+                {
+                    data = this.GetMyProfile();
+                }
+                else
+                {
+                    data = await _userService.GetProfileById(id);
+                }
+
+                if (data == null)
+                {
+                    return View("Error");
+                }
+
+                return View(data);
             }
-
-
-            if (*//*roomModel*//* == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }*//*
-
-            return View(*//*roomModel*//*);
-        }*/
     }
 }

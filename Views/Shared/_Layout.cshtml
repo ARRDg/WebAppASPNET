@@ -28,7 +28,7 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <div class="d-flex">
-                            <a asp-controller="Profile" asp-action="Index" class="btn btn-outline-light">Профиль</a>
+                            <a asp-controller="Profile" asp-action="Index" asp-route-id="" class="btn btn-outline-light">Профиль</a>
                         </div>
                     }
                     else
