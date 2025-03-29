@@ -1,8 +1,9 @@
 ﻿using WebAppASPNET.Data;
+using WebAppASPNET.Services.Interfaces;
 
 namespace WebAppASPNET.Services.Implementations
 {
-    public class FriendshipService
+    public class FriendshipService: IFriendshipService
     {
         private readonly DataContext _context;
 
