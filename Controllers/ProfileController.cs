@@ -17,25 +17,21 @@ namespace WebAppASPNET.Controllers
         }
 
             [Route("[controller]/{id?}")]
-            public async Task<ViewResult> Index(string? id)
+            public async Task<IActionResult> Index(string? id)
             {
-                ProfileModel data;
+                ProfileModel data = await _userService.GetProfileById(id ?? User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                if (string.IsNullOrEmpty(id) || User.FindFirstValue(ClaimTypes.NameIdentifier) == id)
-                {
-                    data = this.GetMyProfile();
-                }
-                else
-                {
-                    data = await _userService.GetProfileById(id);
-                }
-
-                if (data == null)
-                {
-                    return View("Error");
-                }
-
-                return View(data);
+            if (data == null)
+            {
+                return NotFound();
             }
+
+            if (User.FindFirstValue(ClaimTypes.NameIdentifier) == data.CurrentId)
+                {
+                    return View(data);
+                }
+            
+                return View("OtherProfile", data);
+        }
     }
 }
