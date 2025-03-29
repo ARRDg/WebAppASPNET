@@ -4,5 +4,7 @@
     {
         Task SendFriendRequest();
         Task AcceptFriendRequest();
+        Task DeclineFriendRequest();
+        Task BlockUser();
     }
 }

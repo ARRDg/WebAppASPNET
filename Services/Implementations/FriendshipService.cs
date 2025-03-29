@@ -20,5 +20,14 @@ namespace WebAppASPNET.Services.Implementations
         {
 
         }
+        public async Task DeclineFriendRequest()
+        {
+
+        }
+
+        public async Task BlockUser()
+        {
+
+        }
     }
 }
