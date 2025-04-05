@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebAppASPNET.Models;
 using WebAppASPNET.Services.Interfaces;
 
 namespace WebAppASPNET.Controllers
@@ -11,23 +12,29 @@ namespace WebAppASPNET.Controllers
         {
             _friendshipService = friendshipService;
         }
-        public async Task<IActionResult> SendFriendRequest()
+
+        [HttpGet]
+        public async Task<IActionResult> SendFriendRequest(string id)
         {
-            await _friendshipService.SendFriendRequest();
-            return View();
+            await _friendshipService.SendFriendRequest(id);
+            return RedirectToAction("Index", "Profile", new { Id = id });
         }
 
-        public async Task<IActionResult> AcceptFriendRequest()
+        [HttpGet]
+        public async Task<IActionResult> AcceptFriendRequest(string id)
         {
-            await _friendshipService.AcceptFriendRequest();
-            return View();
+            await _friendshipService.AcceptFriendRequest(id);
+            return RedirectToAction("Index", "Profile", new { Id = id });
         }
 
-        public async Task<IActionResult> DeclineFriendRequest()
+        [HttpGet]
+        public async Task<IActionResult> DeclineFriendRequest(string id)
         {
-            await _friendshipService.DeclineFriendRequest();
-            return View();
+            await _friendshipService.DeclineFriendRequest(id);
+            return RedirectToAction("Index", "Profile", new { Id = id });
         }
+
+        [HttpGet]
         public async Task<IActionResult> BlockUser()
         {
             await _friendshipService.BlockUser();

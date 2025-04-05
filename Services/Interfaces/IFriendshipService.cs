@@ -1,10 +1,12 @@
-﻿namespace WebAppASPNET.Services.Interfaces
+﻿using WebAppASPNET.Models;
+
+namespace WebAppASPNET.Services.Interfaces
 {
     public interface IFriendshipService
     {
-        Task SendFriendRequest();
-        Task AcceptFriendRequest();
-        Task DeclineFriendRequest();
+        Task SendFriendRequest(string id);
+        Task AcceptFriendRequest(string id);
+        Task DeclineFriendRequest(string id);
         Task BlockUser();
     }
 }
