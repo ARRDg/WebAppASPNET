@@ -5,7 +5,7 @@ namespace WebAppASPNET.Data
     public class Friendship
     {
         [Key]
-        public int Id {  get; set; }
+        public int Id { get; set; }
         public int RequesterId { get; set; }
         public int ReceiverId { get; set; }
         public FriendshipStatus Status { get; set; }
@@ -14,9 +14,7 @@ namespace WebAppASPNET.Data
         public enum FriendshipStatus
         {
             Pending,
-            Accepted,
-            Declined,
-            Blocked
+            Accepted 
         }
     }
 }
