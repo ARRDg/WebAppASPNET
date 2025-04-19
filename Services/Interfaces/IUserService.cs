@@ -11,5 +11,6 @@ namespace WebAppASPNET.Services.Interfaces
         Task<bool> EmailExists(string email);
         Task CreateUser(RegisterModel model);
         Task<ProfileModel> GetProfileById(string id);
+        Task<List<int>> GetIdFriendsAsync();
     }
 }

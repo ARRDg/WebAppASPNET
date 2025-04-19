@@ -9,10 +9,12 @@ namespace WebAppASPNET.Services.Implementations
     public class UserService : IUserService
     {
         private readonly DataContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserService(DataContext context)
+        public UserService(DataContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public User Authenticate(string email, string password)
@@ -60,6 +62,15 @@ namespace WebAppASPNET.Services.Implementations
                 CurrentName = user.Name,
                 CurrentEmail = user.Email
             };
+        }
+
+        public async Task<List<int>> GetIdFriendsAsync()
+        {
+            int myId = int.Parse(_httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier));
+            var friendIds = await _context.Friendships.Where(s => s.Status == Friendship.FriendshipStatus.Accepted && (s.ReceiverId == myId || s.RequesterId == myId))
+                .Select(s => s.RequesterId == myId ? s.ReceiverId : s.RequesterId).ToListAsync();
+
+            return friendIds;
         }
     }
 }
